@@ -2,17 +2,16 @@ package com.emergence.pantherapp.model;
 
 public class User {
 
-    private String name;
+    private String username;
     private String email;
-    private String password;
     private String userId;
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -23,14 +22,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -39,10 +30,9 @@ public class User {
         this.userId = userId;
     }
 
-    public User(String name, String email, String password, String userId) {
-        this.name = name;
+    public User(String username, String email, String userId) {
+        this.username = username;
         this.email = email;
-        this.password = password;
         this.userId = userId;
     }
 }

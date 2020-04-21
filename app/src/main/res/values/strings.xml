@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PatntherApplication</string>
+    <string name="app_name">PantherApp</string>
     <string name="folders_prompt">Choose one or more folders</string>
 
     <string-array name="user_folders">
@@ -8,5 +8,9 @@
         <item>Diverse</item>
     </string-array>
 
-    <string name="login_create_account">You don\'t have an account yet ?\nCreate an account !</string>
+    <string name="login_createAccount">You don\'t have an account yet ?\nCreate an account !</string>
+
+    <string name="signup_disclaimer">We need you to sign up into Panther to make sure that only YOU
+        can access the documents but we are not using or sharing this information!</string>
+
 </resources>

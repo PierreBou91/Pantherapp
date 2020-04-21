@@ -8,11 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class LoginActivity extends AppCompatActivity {
     //define components
     //all the components start with the 'login' prefix
-    Button connectButton;
-    private TextView createTextView;
+    Button login_ConnectButton;
+    private TextView login_CreateTextView;
+    private FirebaseAuth login_Auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +24,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // initialize components
-        connectButton = findViewById(R.id.login_connect);
-        createTextView = findViewById(R.id.login_sign_up);
+        login_ConnectButton = findViewById(R.id.login_connect);
+        login_CreateTextView = findViewById(R.id.login_sign_up);
+        login_Auth = FirebaseAuth.getInstance();
 
-        connectButton.setOnClickListener(new View.OnClickListener() {
+        login_ConnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // start new Signup screen and finish the current
@@ -33,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        createTextView.setOnClickListener(new View.OnClickListener() {
+        login_CreateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent signUpIntent = new Intent(LoginActivity.this,
@@ -41,5 +46,13 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(signUpIntent);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = login_Auth.getCurrentUser();
+//        updateUI(currentUser);
     }
 }
