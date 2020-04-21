@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "917771885448",
+    "firebase_url": "https://pantherapp-fdfce.firebaseio.com",
+    "project_id": "pantherapp-fdfce",
+    "storage_bucket": "pantherapp-fdfce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917771885448:android:8e06152d73dedd1696783d",
+        "android_client_info": {
+          "package_name": "com.emergence.pantherapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917771885448-37odn4astdi5qn15pp4rgi1n4tbk1une.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcGGGMrQHRF9oQLkFI-rrqcWqpfiuW4ls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917771885448-37odn4astdi5qn15pp4rgi1n4tbk1une.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
