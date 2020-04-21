@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">PatntherApplication</string>
+    <string name="folders_prompt">Choose one or more folders</string>
+
+    <string-array name="user_folders">
+        <item>Assurance</item>
+        <item>Logement</item>
+        <item>Diverse</item>
+    </string-array>
+
+    <string name="login_create_account">You don\'t have an account yet ?\nCreate an account !</string>
+</resources>
