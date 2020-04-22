@@ -86,19 +86,13 @@ public class LoginActivity extends AppCompatActivity {
 
                             // Get a reference in the database for the current user
                             assert user != null;
-                            String path = "users/" + user.getUid();
-                            currentUserReference = database.getReference("users/" + user.getUid());
-
-
+                            currentUserReference = database.getReference("users/" + user.getUid() + "/username");
 
                             // Retrieve the username of this user from the database
-                            currentUserReference
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                            currentUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-//                                    snapshot = dataSnapshot;
-                                    currentUserUsername = dataSnapshot.child("/username").getValue(String.class);
+                                    currentUserUsername = dataSnapshot.getValue(String.class);
                                 }
 
                                 @Override
@@ -127,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(
                                     LoginActivity.this, MainActivity.class);
                             startActivity(intent);
-
 
                         } else {
                             // If sign in fails, display a message to the user.
