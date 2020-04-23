@@ -27,9 +27,7 @@ public class MainActivity extends AppCompatActivity {
         importDocButton = (Button) findViewById(R.id.mainpage_importdoc);
         hello = findViewById(R.id.mainpage_hello);
 
-        hello.setText("Hello " + CURRENT_USER_SESSION.getUsername() +
-                CURRENT_USER_SESSION.getEmail() +
-                CURRENT_USER_SESSION.getUserId());
+        hello.setText("Hello " + CURRENT_USER_SESSION.getUsername());
 
         // set actions
         importDocButton.setOnClickListener(new View.OnClickListener() {

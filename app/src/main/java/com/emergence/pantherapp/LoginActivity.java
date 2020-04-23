@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update user session and go to main
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            final FirebaseUser user = firebaseAuth.getCurrentUser();
 
                             // Get a reference in the database for the current user
                             assert user != null;
@@ -93,6 +93,15 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     currentUserUsername = dataSnapshot.getValue(String.class);
+                                    // Get every information into a User class
+                                    MainActivity.CURRENT_USER_SESSION = new User(
+                                            currentUserUsername,
+                                            user.getEmail(),
+                                            user.getUid()
+                                    );
+                                    Intent intent = new Intent(
+                                            LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
                                 }
 
                                 @Override
@@ -101,26 +110,6 @@ public class LoginActivity extends AppCompatActivity {
                                 }
 
                             });
-
-                            Log.d(TAG, "Value of variable: " + currentUserUsername);
-                            // Get every information into a User class
-                            MainActivity.CURRENT_USER_SESSION = new User(
-                                    currentUserUsername,
-                                    user.getEmail(),
-                                    user.getUid()
-                            );
-
-                            User alibek = new User(
-                                    currentUserUsername,
-                                    user.getEmail(),
-                                    user.getUid()
-                            );
-
-                            Log.i(TAG, alibek.toString());
-
-                            Intent intent = new Intent(
-                                    LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
 
                         } else {
                             // If sign in fails, display a message to the user.
