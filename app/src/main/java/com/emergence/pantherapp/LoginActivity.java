@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,9 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView userPassword;
     private Button connectButton;
     private TextView createTextView;
-
-//    private DataSnapshot snapshot;
-
+    private TextView resetPass;
+    private long LastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         connectButton = findViewById(R.id.login_connect);
         createTextView = findViewById(R.id.login_sign_up);
         database = FirebaseDatabase.getInstance();
+        resetPass = findViewById(R.id.login_reset_pass);
 
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 String email = LoginActivity.this.userEmail.getText().toString().trim();
                 String password = LoginActivity.this.userPassword.getText().toString().trim();
-                login_connect(email, password);
+                connectWithEmailAndPass(email, password);
             }
         });
 
@@ -71,9 +72,43 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(signUpIntent);
             }
         });
+
+        resetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // mis-clicking prevention, using threshold of 1000 ms
+                if (SystemClock.elapsedRealtime() - LastClickTime < 1000){
+                    return;
+                }
+                LastClickTime = SystemClock.elapsedRealtime();
+
+                if (userEmail.getText().toString().equals("")) {
+                    userEmail.setError("This field cannot be empty");
+                } else {
+                    firebaseAuth.sendPasswordResetEmail(userEmail.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(LoginActivity.this,
+                                                "Email to reset password sent",
+                                                Toast.LENGTH_LONG)
+                                                .show();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this,
+                                                task.getException().getMessage(),
+                                                Toast.LENGTH_LONG)
+                                                .show();
+                                    }
+
+                                }
+                            });
+                }
+            }
+        });
     }
 
-    private void login_connect(String email, String password) {
+    private void connectWithEmailAndPass(String email, String password) {
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -86,10 +121,13 @@ public class LoginActivity extends AppCompatActivity {
 
                             // Get a reference in the database for the current user
                             assert user != null;
-                            currentUserReference = database.getReference("users/" + user.getUid() + "/username");
+                            currentUserReference = database.getReference("users/" +
+                                    user.getUid() +
+                                    "/username");
 
                             // Retrieve the username of this user from the database
-                            currentUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            currentUserReference
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     currentUserUsername = dataSnapshot.getValue(String.class);
@@ -115,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
 
                             // there might be other errors to check ??
                             userEmail.setError("Wrong email/password combination");

@@ -113,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
                             assert newUser != null;
                             putNewUserInDatabase(newUser);
                             Toast.makeText(SignUpActivity.this, "Sign up success.",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
 
                             // Assign user values to CURRENT_USER_SESSION
                             MainActivity.CURRENT_USER_SESSION = new User(
@@ -131,7 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUpActivity.this,
                                     "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
                             userEmail.setError("Email address might already be registered. You" +
                                     "can recover your password.");
                         }
