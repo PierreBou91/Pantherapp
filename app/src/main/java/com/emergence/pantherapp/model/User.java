@@ -30,6 +30,15 @@ public class User {
         this.userId = userId;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", userId='" + userId + '\'' +
+                '}';
+    }
+
     public User(String username, String email, String userId) {
         this.username = username;
         this.email = email;

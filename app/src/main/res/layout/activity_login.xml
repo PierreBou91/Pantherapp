@@ -7,11 +7,12 @@ android:layout_height="match_parent"
 tools:context=".LoginActivity">
 
 <EditText
-    android:id="@+id/login_username"
+    android:id="@+id/login_email"
     android:layout_width="250dp"
     android:layout_height="wrap_content"
-    android:hint="Username or email"
+    android:hint="Email"
     android:textSize="20dp"
+    android:inputType="textEmailAddress"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +29,7 @@ tools:context=".LoginActivity">
     android:textSize="20dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/login_username" />
+    app:layout_constraintTop_toBottomOf="@+id/login_email" />
 
 <Button
     android:id="@+id/login_connect"
@@ -41,15 +42,17 @@ tools:context=".LoginActivity">
     app:layout_constraintTop_toBottomOf="@+id/login_pass"
     app:layout_constraintVertical_bias="0.26999998" />
 
-<TextView
-    android:id="@+id/login_sign_up"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:text="@string/login_createAccount"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/login_connect"
-    android:gravity="center"/>
+    <TextView
+        android:id="@+id/login_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/login_createAccount"
+        android:textColor="#032EDA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_connect" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

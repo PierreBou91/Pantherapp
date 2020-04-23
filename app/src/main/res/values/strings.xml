@@ -8,7 +8,8 @@
         <item>Diverse</item>
     </string-array>
 
-    <string name="login_createAccount">You don\'t have an account yet ?\nCreate an account !</string>
+    <string name="login_createAccount">You don\'t have an account yet ?\n Click here to create an
+        account !</string>
 
     <string name="signup_disclaimer">We need you to sign up into Panther to make sure that only YOU
         can access the documents but we are not using or sharing this information!</string>
