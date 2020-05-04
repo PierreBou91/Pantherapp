@@ -46,11 +46,11 @@ public class SignUpActivity extends AppCompatActivity {
     // changed, make sure to also change the setError text in the validatePassword() function.
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
-                    "(?=.*[0-9]+.*)" +
-                    "(?=.*[a-zA-Z]+.*)" +
-                    "[0-9a-zA-Z]" +
-                    "{6,}" +
-                    "$");
+            "(?=.*[0-9]+.*)" +
+            "(?=.*[a-zA-Z]+.*)" +
+            "[0-9a-zA-Z]" +
+            "{6,}" +
+            "$");
     private long LastClickTime = 0;
 
     @Override
