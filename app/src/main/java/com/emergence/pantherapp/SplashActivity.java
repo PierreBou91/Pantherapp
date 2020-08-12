@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 // start new SignUp screen and finish the current
                 Intent loginIntent = new Intent(SplashActivity.this,
-                        LoginActivity.class);
+                        MainMenuActivity.class);
                 startActivity(loginIntent);
                 finish();
             }
