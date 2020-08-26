@@ -1,5 +1,6 @@
 package com.emergence.pantherapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -13,6 +14,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -20,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -110,7 +113,23 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_IMAGE);
+
+        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex){
+                //Error handling
+            }
+
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.emergence.pantherapp.fileprovider",
+                        photoFile);
+                galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_IMAGE);
+            }
+        }
     }
 
     private File createImageFile() throws IOException {
@@ -127,5 +146,12 @@ public class MainMenuActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // ???
+
     }
 }
