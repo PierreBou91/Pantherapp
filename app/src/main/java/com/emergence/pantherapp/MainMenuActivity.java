@@ -1,10 +1,12 @@
 package com.emergence.pantherapp;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,7 +20,11 @@ import android.widget.Button;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -31,6 +37,7 @@ public class MainMenuActivity extends AppCompatActivity {
     static final int PICK_IMAGE = 2;
 
     String currentPhotoPath;
+    Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,9 +160,43 @@ public class MainMenuActivity extends AppCompatActivity {
         } else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
             Log.d(TAG, currentPhotoPath);
 
-            Intent intent = new Intent(this, ModifyPictureActivity.class);
-            intent.putExtra("USER_IMAGE", currentPhotoPath);
-            startActivity(intent);
+            if (data != null) {
+                uri = Uri.parse(data.getDataString());
+                Log.d("DATA", uri.toString());
+
+                InputStream input = null;
+                OutputStream output = null;
+
+                try {
+                    ContentResolver content = this.getContentResolver();
+
+                    input = content.openInputStream(uri);
+
+                    output = new FileOutputStream(currentPhotoPath);
+
+                    byte[] buffer = new byte[1000];
+                    int bytesRead = 0;
+
+                    assert input != null;
+
+                    while ((bytesRead = input.read(buffer, 0, buffer.length)) >= 0)
+                    {
+                        output.write(buffer, 0, buffer.length);
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent = new Intent(this, ModifyPictureActivity.class);
+                intent.putExtra("USER_IMAGE", /*uri.toString()*/ currentPhotoPath);
+                startActivity(intent);
+            }
+
+
+
         }
 
     }
