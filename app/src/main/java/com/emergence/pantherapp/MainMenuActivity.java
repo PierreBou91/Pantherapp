@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,7 +14,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -22,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -96,38 +94,33 @@ public class MainMenuActivity extends AppCompatActivity {
             } catch (IOException ex) {
                 // Error occurred while creating the File
             }
-            // Continue only if the File was successfully created
+
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.emergence.pantherapp.fileprovider",
-                        photoFile);
+                        "com.emergence.pantherapp.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
-
     }
 
     private void openGalleryIntent() {
         Log.d(TAG, "Method for Intent Gallery started");
-        Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 
         if (galleryIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            } catch (IOException ex){
-                //Error handling
+            } catch (IOException ex) {
+                // Error occurred while creating the File
             }
 
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.emergence.pantherapp.fileprovider",
-                        photoFile);
+                        "com.emergence.pantherapp.fileprovider", photoFile);
                 galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_IMAGE);
+                startActivityForResult(galleryIntent, PICK_IMAGE);
             }
         }
     }
@@ -142,7 +135,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
@@ -151,7 +143,20 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // ???
+
+        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+            Log.d(TAG, currentPhotoPath);
+
+            Intent intent = new Intent(this, ModifyPictureActivity.class);
+            intent.putExtra("USER_IMAGE", currentPhotoPath);
+            startActivity(intent);
+        } else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
+            Log.d(TAG, currentPhotoPath);
+
+            Intent intent = new Intent(this, ModifyPictureActivity.class);
+            intent.putExtra("USER_IMAGE", currentPhotoPath);
+            startActivity(intent);
+        }
 
     }
 }
