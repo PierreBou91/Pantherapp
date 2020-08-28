@@ -116,14 +116,14 @@ public class SignUpActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
 
                             // Assign user values to CURRENT_USER_SESSION
-                            MainActivity.CURRENT_USER_SESSION = new User(
+                            MainActivityLoggedIn.CURRENT_USER_SESSION = new User(
                                     user.getUsername(),
                                     email,
                                     newUser.getUid()
                             );
 
                             Intent intent = new Intent(
-                                    SignUpActivity.this, MainActivity.class);
+                                    SignUpActivity.this, MainActivityLoggedIn.class);
                             startActivity(intent);
 
                         } else {

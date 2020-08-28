@@ -132,13 +132,13 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     currentUserUsername = dataSnapshot.getValue(String.class);
                                     // Get every information into a User class
-                                    MainActivity.CURRENT_USER_SESSION = new User(
+                                    MainActivityLoggedIn.CURRENT_USER_SESSION = new User(
                                             currentUserUsername,
                                             user.getEmail(),
                                             user.getUid()
                                     );
                                     Intent intent = new Intent(
-                                            LoginActivity.this, MainActivity.class);
+                                            LoginActivity.this, MainActivityLoggedIn.class);
                                     startActivity(intent);
                                 }
 

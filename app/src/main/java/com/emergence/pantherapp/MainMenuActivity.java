@@ -1,6 +1,5 @@
 package com.emergence.pantherapp;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -33,11 +32,10 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button selectFile, signIn;
     private String TAG = "MainMenuActivity";
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1; //used as codes for startActivityForResult
     static final int PICK_IMAGE = 2;
 
-    String currentPhotoPath;
-    Uri uri;
+    private String currentPhotoPath; //used to store the absolute path of the created file
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,11 +155,12 @@ public class MainMenuActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ModifyPictureActivity.class);
             intent.putExtra("USER_IMAGE", currentPhotoPath);
             startActivity(intent);
+
         } else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
             Log.d(TAG, currentPhotoPath);
 
             if (data != null) {
-                uri = Uri.parse(data.getDataString());
+                Uri uri = Uri.parse(data.getDataString());
                 Log.d("DATA", uri.toString());
 
                 InputStream input = null;
@@ -194,10 +193,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 intent.putExtra("USER_IMAGE", /*uri.toString()*/ currentPhotoPath);
                 startActivity(intent);
             }
-
-
-
         }
-
     }
 }

@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImportDocActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivityLoggedIn" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

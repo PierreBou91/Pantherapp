@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.emergence.pantherapp.model.User;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityLoggedIn extends AppCompatActivity {
 
     // define components
     // components ids start with "mainpage" prefix
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         importDocButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent scanDocIntent = new Intent(MainActivity.this,
+                Intent scanDocIntent = new Intent(MainActivityLoggedIn.this,
                         ImportDocActivity.class);
                 startActivity(scanDocIntent);
             }
