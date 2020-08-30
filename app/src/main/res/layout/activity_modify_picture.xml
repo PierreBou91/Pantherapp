@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".ModifyPictureActivity">
 
-    <!--    <ImageView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:id="@+id/picture"-->
-    <!--        />-->
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/textView"
