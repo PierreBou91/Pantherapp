@@ -72,4 +72,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Save fields"/>
 
+    <Button
+        android:id="@+id/saveToGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save to Gallery"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sendByMail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85" />
+
+    <Button
+        android:id="@+id/sendByMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send by E Mail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/saveToGallery"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:layout_constraintVertical_bias="0.85"/>
+
+    <Button
+        android:id="@+id/sendOther"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send an other way"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

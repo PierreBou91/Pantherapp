@@ -1,34 +1,37 @@
 package com.emergence.pantherapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentProvider;
 import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ImageDecoder;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ModifyPictureActivity extends AppCompatActivity {
 
@@ -38,8 +41,9 @@ public class ModifyPictureActivity extends AppCompatActivity {
 
     private TextView textView;
     private EditText field1, field2, field3, field4;
-    private Button saveButton;
+    private Button saveButton, sendByMail, saveToGallery, sendOther;
     private List<String> watermarkArray;
+    private String path;
 
 
     @Override
@@ -49,6 +53,7 @@ public class ModifyPictureActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final Uri imageUri = Uri.fromFile(new File(intent.getStringExtra("USER_IMAGE")));
+        path = intent.getStringExtra("USER_IMAGE");
 
         image = findViewById(R.id.picture);
         textView = findViewById(R.id.textView);
@@ -57,9 +62,14 @@ public class ModifyPictureActivity extends AppCompatActivity {
         field3 = findViewById(R.id.editText3);
         field4 = findViewById(R.id.editText4);
         saveButton = findViewById(R.id.saveFieldsButton);
+        sendByMail = findViewById(R.id.sendByMail);
+        saveToGallery = findViewById(R.id.saveToGallery);
+        sendOther = findViewById(R.id.sendOther);
+
         watermarkArray = new ArrayList<>();
 
         saveButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 saveFields(field1);
@@ -75,6 +85,7 @@ public class ModifyPictureActivity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void modifyThePic(Uri imageUri) throws IOException {
 
         InputStream input = this.getContentResolver().openInputStream(imageUri); //used to draw bitmap
@@ -104,8 +115,13 @@ public class ModifyPictureActivity extends AppCompatActivity {
         field4.setVisibility(View.GONE);
         saveButton.setVisibility(View.GONE);
 
+        sendByMail.setVisibility(View.VISIBLE);
+        saveToGallery.setVisibility(View.VISIBLE);
+        sendOther.setVisibility(View.VISIBLE);
+
         image.setImageBitmap(bitmap); //Control the result
 
+        saveBitmap(this, bitmap, Bitmap.CompressFormat.JPEG,".jpg", path);
     }
 
     private void saveFields(EditText editText) {
@@ -114,6 +130,73 @@ public class ModifyPictureActivity extends AppCompatActivity {
             watermarkArray.add(editText.getText().toString());
         }
 
+    }
+
+    private void saveImage() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(path);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+    private void saveBitmap(@NonNull final Context context, @NonNull final Bitmap bitmap,
+                            @NonNull final Bitmap.CompressFormat format, @NonNull final String mimeType,
+                            @NonNull final String displayName) throws IOException
+    {
+        final String relativeLocation = Environment.DIRECTORY_PICTURES;
+
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, displayName);
+        contentValues.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, relativeLocation);
+
+
+
+        final ContentResolver resolver = context.getContentResolver();
+
+        OutputStream stream = null;
+        Uri uri = null;
+
+        try
+        {
+            final Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            uri = resolver.insert(contentUri, contentValues);
+
+            if (uri == null)
+            {
+                throw new IOException("Failed to create new MediaStore record.");
+            }
+
+            stream = resolver.openOutputStream(uri);
+
+            if (stream == null)
+            {
+                throw new IOException("Failed to get output stream.");
+            }
+
+            if (!bitmap.compress(format, 95, stream))
+            {
+                throw new IOException("Failed to save bitmap.");
+            }
+        }
+        catch (IOException e)
+        {
+            if (uri != null)
+            {
+                // Don't leave an orphan entry in the MediaStore
+                resolver.delete(uri, null, null);
+            }
+
+            throw e;
+        }
+        finally
+        {
+            if (stream != null)
+            {
+                stream.close();
+            }
+        }
     }
 
 }
